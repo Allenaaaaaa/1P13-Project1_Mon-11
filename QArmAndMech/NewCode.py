@@ -27,6 +27,8 @@ def reject():
     pick_up_luggage()
     arm.rotate_base(90)
     arm.rotate_base(90)
+    arm.rotate_shoulder(10)
+    arm.rotate_elbow(10)
     arm.control_gripper(-45)
     
 
@@ -39,12 +41,20 @@ def platform():
     # Rotate the base towards the platform (tweak this)
     arm.rotate_base(70)
     arm.control_gripper(-45)
+
+    time.sleep(0.5)
+
+    # Lower arm
+    bot.rotate_stepper_cw(1.2)
+    time.sleep(1)
+    # Raise arm back up
+    bot.rotate_stepper_ccw(1.2)
     
 
 def pick_up_luggage():
     """
-    Pick up a luggage from the servo table, then return the arm to the home position without
-    droppping the luggage.
+    Pick up a luggage from the servo table, then return the arm to the home
+    position without dropping the luggage.
     """
     # FACING THE ARM HEAD ON
     arm.home()
@@ -65,27 +75,22 @@ def process_luggage():
     """
     # Scan the luggage (on the opposite side of the q-arm)
     location = scanner.barcode_check()
-    print(location)
 
     # Rotate table to position luggage under qarm
     table.rotate_table_angle(180)
 
-    if location == 'rejection bin':
+    if location == 'Rejection Bin':
         reject()
     else:
         platform()
 
-"""
-TEST CODE
-"""
-#bot.activate_stepper_motor()
 
+# Run the program
+bot.activate_stepper_motor()
+time.sleep(1)
+# Process all 4 luggage on servo table
 for _ in range(4):
     process_luggage()
-
-#bot.rotate_stepper_cw(1.2)
-#time.sleep(1)
-#bot.rotate_stepper_ccw(1.2)
 
 arm.terminate_arm()
 
