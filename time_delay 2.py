@@ -1,5 +1,5 @@
-from read_fleet_data import read_fleet_data
-from P1_Pasengerdata import passenger_data
+from fleet_data import fleet_data
+from passenger_data import passenger_data
 
 def time_delay(passenger_data, fleet_data):
     late_layover_data = []
@@ -31,7 +31,8 @@ def time_delay(passenger_data, fleet_data):
 
 
 # Load data
-fleet_data = read_fleet_data("fleet_data.txt")
+fleet_data = fleet_data()
 passenger_data = passenger_data()
+
 
 print(time_delay(passenger_data, fleet_data))
